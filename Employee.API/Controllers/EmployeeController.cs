@@ -40,16 +40,16 @@ namespace Employee.API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Update(int id, Domain.Entities.Employee employee)
         {
-            if (id != employee.Id) return BadRequest();
+            if (id != employee.Id) return BadRequest(new { message = "ID mismatch." });
             await _employeeService.UpdateEmployeeAsync(employee);
-            return NoContent();
+            return Ok(new { message = "Employee updated successfully." });
         }
 
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
             await _employeeService.DeleteEmployeeAsync(id);
-            return NoContent();
+            return Ok(new { message = "Employee deleted successfully." });
         }
     }
 }
