@@ -6,10 +6,12 @@ namespace Employee.Application.Services
     public class ClientService : IClientService
     {
         private readonly IClientRepository _clientRepository;
+        private readonly IKafkaProducer _kafkaProducer;
 
-        public ClientService(IClientRepository clientRepository)
+        public ClientService(IClientRepository clientRepository, IKafkaProducer kafkaProducer)
         {
             _clientRepository = clientRepository;
+            _kafkaProducer = kafkaProducer;
         }
 
         public async Task<IEnumerable<Client>> GetAllClientsAsync()
@@ -25,6 +27,7 @@ namespace Employee.Application.Services
         public async Task CreateClientAsync(Client client)
         {
             await _clientRepository.AddAsync(client);
+            await _kafkaProducer.ProduceAsync("client-registrations", $"New client registered: {client.Name} ({client.Email})");
         }
 
         public async Task UpdateClientAsync(Client client)
