@@ -1,11 +1,8 @@
+using Employee.Infrastructure;
+using Employee.API.Configurations;
 using Employee.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
-using Employee.Application.Interfaces;
-using Employee.Application.Services;
 using Employee.Application;
-using Employee.Infrastructure.Repositories;
-using Employee.Infrastructure;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,9 +30,12 @@ if (allowedOrigins != null && allowedOrigins.Length > 0)
     });
 }
 
-// Register Repository and Service
+// Centralized Registrations
 builder.Services.AddRepositories();
 builder.Services.AddApplicationServices();
+builder.Services.AddKafkaBackgroundServices();
+builder.Services.AddSignalRSetup();
+builder.Services.AddHangfireSetup(builder.Configuration);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -50,7 +50,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("DefaultCors");
 
+// Use Extension Methods for Middleware Setup
+app.UseHangfireSetup();
+
 app.MapControllers();
+app.MapSignalRHubs();
 
 app.MapGet("/", (HttpContext context) => context.Response.Redirect("/swagger"));
 
