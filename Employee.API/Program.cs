@@ -2,7 +2,9 @@ using Employee.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Employee.Application.Interfaces;
 using Employee.Application.Services;
+using Employee.Application;
 using Employee.Infrastructure.Repositories;
+using Employee.Infrastructure;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -32,8 +34,8 @@ if (allowedOrigins != null && allowedOrigins.Length > 0)
 }
 
 // Register Repository and Service
-builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+builder.Services.AddRepositories();
+builder.Services.AddApplicationServices();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
