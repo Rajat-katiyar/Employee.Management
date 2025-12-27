@@ -50,6 +50,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("DefaultCors");
 
+// API Logging Middleware
+app.UseMiddleware<Employee.API.Middleware.ApiLoggingMiddleware>();
+
 // Use Extension Methods for Middleware Setup
 app.UseHangfireSetup();
 
