@@ -10,6 +10,7 @@ namespace Employee.Infrastructure
         {
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IKafkaProducer, Employee.Infrastructure.Services.KafkaProducer>();
             return services;
         }

@@ -1,11 +1,13 @@
 using Employee.Application.Interfaces;
 using Employee.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Employee.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class ClientController : ControllerBase
     {
         private readonly IClientService _clientService;
