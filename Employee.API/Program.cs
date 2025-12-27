@@ -37,8 +37,11 @@ builder.Services.AddKafkaBackgroundServices();
 builder.Services.AddSignalRSetup();
 builder.Services.AddHangfireSetup(builder.Configuration);
 
+// JWT Authentication
+builder.Services.AddJwtAuthentication(builder.Configuration);
+
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerWithJwt();
 
 var app = builder.Build();
 
@@ -49,6 +52,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("DefaultCors");
+
+// Authentication & Authorization
+app.UseAuthentication();
+app.UseAuthorization();
 
 // API Logging Middleware
 app.UseMiddleware<Employee.API.Middleware.ApiLoggingMiddleware>();

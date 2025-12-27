@@ -12,5 +12,6 @@ namespace Employee.Infrastructure.Data
 
         public DbSet<Employee.Domain.Entities.Employee> Employees { get; set; }
         public DbSet<Client> Clients { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }
