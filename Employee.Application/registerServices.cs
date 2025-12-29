@@ -11,6 +11,7 @@ namespace Employee.Application
             services.AddScoped<IEmployeeService, EmployeeService>();
             services.AddScoped<IClientService, ClientService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IApiLogger, ApiLoggerService>();
             return services;
         }

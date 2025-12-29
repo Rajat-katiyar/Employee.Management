@@ -11,10 +11,12 @@ namespace Employee.API.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IUserService _userService;
 
-        public AuthenticationController(IAuthService authService)
+        public AuthenticationController(IAuthService authService, IUserService userService)
         {
             _authService = authService;
+            _userService = userService;
         }
 
         [HttpPost("register")]
@@ -62,7 +64,7 @@ namespace Employee.API.Controllers
         {
             try
             {
-                var users = await _authService.GetAllUsersAsync();
+                var users = await _userService.GetAllUsersAsync();
                 return Ok(new { message = "Users retrieved successfully.", data = users });
             }
             catch (Exception ex)
@@ -77,7 +79,7 @@ namespace Employee.API.Controllers
         {
             try
             {
-                var user = await _authService.GetUserByIdAsync(id);
+                var user = await _userService.GetUserByIdAsync(id);
                 if (user == null)
                 {
                     return NotFound(new { message = "User not found." });
@@ -104,7 +106,7 @@ namespace Employee.API.Controllers
                     return Unauthorized(new { message = "Invalid token." });
                 }
 
-                var user = await _authService.GetUserByIdAsync(userId);
+                var user = await _userService.GetUserByIdAsync(userId);
                 if (user == null)
                 {
                     return NotFound(new { message = "User not found." });
@@ -137,7 +139,7 @@ namespace Employee.API.Controllers
                     return Forbid("You can only update your own profile.");
                 }
 
-                var updatedUser = await _authService.UpdateUserAsync(id, request);
+                var updatedUser = await _userService.UpdateUserAsync(id, request);
                 return Ok(new { message = "User updated successfully.", data = updatedUser });
             }
             catch (InvalidOperationException ex)
@@ -169,7 +171,7 @@ namespace Employee.API.Controllers
                     return Forbid("You can only delete your own account.");
                 }
 
-                var deleted = await _authService.DeleteUserAsync(id);
+                var deleted = await _userService.DeleteUserAsync(id);
                 if (!deleted)
                 {
                     return NotFound(new { message = "User not found." });
